@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.tinydelver.creature.Actor;
+import com.tinydelver.utils.Tuple;
 
 
 /**
@@ -134,29 +135,18 @@ public class World {
 	 */
 	public boolean determineEmptyStartLocation(Actor creature) {
 		boolean foundPosition = false;
-		int x = 0;
-		int y = 0;
 		
 		// verify that there are walkable tiles before continuing
-		if (hasWalkableTiles()) {
-			// determine target x,y location
-			while (!foundPosition) {
-				x = (int)(Math.random() * width);
-				y = (int)(Math.random() * height);
-	
-				// test we are within bounds
-				if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
-					// test this location
-					if (tiles[x][y].isWalkable() && getActorAtLocation(x, y) == null) {
-						// set creature location
-						creature.setXPos(x);
-						creature.setYPos(y);
-						// flag found position
-						foundPosition = true;
-					}
-					
-				}
-			}
+		ArrayList<Tuple<Integer,Integer>> walkable = getEmptyWalkableTiles();
+		if (!walkable.isEmpty()) {
+			// randomly select start location based on collection
+			int pos = (int)(Math.random() * walkable.size()-1);
+			Tuple<Integer, Integer> selectedPosition = walkable.get(pos);
+			// set creature location
+			creature.setXPos(selectedPosition.getLeft());
+			creature.setYPos(selectedPosition.getRight());
+			// flag found position
+			foundPosition = true;
 		}
 		
 		return foundPosition;
@@ -165,20 +155,21 @@ public class World {
 	/**
 	 * Test the tiles array to confirm that there are walkable tiles. These are
 	 * required to determine start locations.
-	 * 
+	 *
 	 * @return boolean showing if there are walkable tiles
 	 */
-	private boolean hasWalkableTiles() {
-		boolean result = false;
+	protected ArrayList<Tuple<Integer, Integer>> getEmptyWalkableTiles() {
+		ArrayList<Tuple<Integer, Integer>> walkableTiles = new ArrayList<Tuple<Integer, Integer>>();
+
 		for (int idx = 0; idx < tiles.length; idx++) {
 			for (int idy = 0; idy < tiles[0].length; idy++) {
-				if (tiles[idx][idy].isWalkable()) {
-					result = true;
-					break;
+				if (tiles[idx][idy].isWalkable() && getActorAtLocation(idx, idy) == null) {
+					walkableTiles.add(new Tuple<Integer, Integer>(idx, idy));
 				}
 			}
 		}
-		return result;
+
+		return walkableTiles;
 	}
 
 	/**
