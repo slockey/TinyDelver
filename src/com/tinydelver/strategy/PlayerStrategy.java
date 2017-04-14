@@ -13,8 +13,11 @@ public class PlayerStrategy implements IStrategy {
 	
 	@Override
 	public void onEnter(int x, int y, Tile tile) {
-		
-		if (tile.isWalkable()){
+
+		// tile is walkable, but there's an actor there
+		if (tile.isWalkable() && (null != player.getWorld().getActorAtLocation(x, y))) {
+			player.attack(player.getWorld().getActorAtLocation(x, y));
+		} else if (tile.isWalkable()){
 	        player.setXPos(x);
 	        player.setYPos(y);
 	    } else if (tile.isDiggable()) {

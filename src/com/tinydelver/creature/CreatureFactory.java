@@ -2,6 +2,8 @@ package com.tinydelver.creature;
 
 import com.tinydelver.strategy.FungusStrategy;
 import com.tinydelver.strategy.PlayerStrategy;
+import com.tinydelver.utils.dice.DiceValue;
+import com.tinydelver.utils.dice.HitDice;
 import com.tinydelver.world.Tile;
 import com.tinydelver.world.World;
 
@@ -9,7 +11,7 @@ public class CreatureFactory {
 
 	public static Actor newPlayerInstance(World world) {
 
-		Creature player = new Creature("0:Player", "Player", Tile.PLAYER, world, 0, 0);
+		Creature player = new Creature("0:Player", "Player", Tile.PLAYER, new HitDice(1, DiceValue.D10), world, 0, 0);
 
 		// add AI/strategies
 		PlayerStrategy strat = new PlayerStrategy(player);
@@ -22,7 +24,7 @@ public class CreatureFactory {
 	}
 	
 	public static Actor newFungusInstance(World world) {
-		Creature fungus = new Creature("Fungus", Tile.FUNGUS, world, 0, 0);
+		Creature fungus = new Creature("Fungus", Tile.FUNGUS, new HitDice(1, DiceValue.D4), world, 0, 0);
 		
 		FungusStrategy strat = new FungusStrategy(fungus);
 		fungus.setStrategy(strat);

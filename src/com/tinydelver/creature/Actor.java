@@ -26,6 +26,7 @@ public interface Actor {
 	public void dig(int x, int y);
 	public void attack(Actor actor);
 	public void takeDamage(int damage);
+	public void healDamage(int damage);
 	
 	public void onUpdate();
 	
