@@ -59,12 +59,17 @@ public class FungusStrategy implements IStrategy {
 				// check world tile
 				if (fungus.getWorld().getTile(location.getLeft(), location.getRight()).isWalkable()) {
 					// could spread - make sure no actor
-					if (fungus.getWorld().getActorAtLocation(location.getLeft(), location.getRight()) == null) {
+					Actor actor = fungus.getWorld().getActorAtLocation(location.getLeft(), location.getRight());
+					if (actor == null) {
 						Actor child = CreatureFactory.newFungusInstance(fungus.getWorld());
 						child.setXPos(location.getLeft());
 						child.setYPos(location.getRight());
 						fungus.getWorld().addActorToWorld(child);
 						spreadCount += 1;
+						break;
+					} else {
+						// there is an actor here... infect!
+						fungus.attack(actor);
 						break;
 					}
 				}

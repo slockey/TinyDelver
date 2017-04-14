@@ -102,8 +102,9 @@ public class Creature implements Actor {
 
 	private void setHitDice(HitDice hitDice) {
 		this.hitDice = hitDice;
-		// generate hit points based on hit dice
+		// generate hit points based on hit dice & store current and total values
 		hitPoints = DiceRoller.roll(hitDice.getNumber(), hitDice.getDiceValue());
+		totalHitPoints = hitPoints;
 	}
 
 	@Override
