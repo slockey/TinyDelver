@@ -132,30 +132,53 @@ public class World {
 	 * 
 	 * @param creature
 	 */
-	public void determineEmptyStartLocation(Actor creature) {
+	public boolean determineEmptyStartLocation(Actor creature) {
+		boolean foundPosition = false;
 		int x = 0;
 		int y = 0;
-		// determine target x,y location
-		boolean foundPosition = false;
-		while (!foundPosition) {
-			// TODO: this loop could be infinite if there are no walkable tiles
-			//		 in the world map!!! Need a unit test and solution
-			x = (int)(Math.random() * width);
-			y = (int)(Math.random() * height);
-
-			// test we are within bounds
-			if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
-				// test this location
-				if (tiles[x][y].isWalkable() && getActorAtLocation(x, y) == null) {
-					// set creature location
-					creature.setXPos(x);
-					creature.setYPos(y);
-					// flag found position
-					foundPosition = true;
+		
+		// verify that there are walkable tiles before continuing
+		if (hasWalkableTiles()) {
+			// determine target x,y location
+			while (!foundPosition) {
+				x = (int)(Math.random() * width);
+				y = (int)(Math.random() * height);
+	
+				// test we are within bounds
+				if ((x >= 0 && x < width) && (y >= 0 && y < height)) {
+					// test this location
+					if (tiles[x][y].isWalkable() && getActorAtLocation(x, y) == null) {
+						// set creature location
+						creature.setXPos(x);
+						creature.setYPos(y);
+						// flag found position
+						foundPosition = true;
+					}
+					
 				}
-				
 			}
 		}
+		
+		return foundPosition;
+	}
+	
+	/**
+	 * Test the tiles array to confirm that there are walkable tiles. These are
+	 * required to determine start locations.
+	 * 
+	 * @return boolean showing if there are walkable tiles
+	 */
+	private boolean hasWalkableTiles() {
+		boolean result = false;
+		for (int idx = 0; idx < tiles.length; idx++) {
+			for (int idy = 0; idy < tiles[0].length; idy++) {
+				if (tiles[idx][idy].isWalkable()) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
