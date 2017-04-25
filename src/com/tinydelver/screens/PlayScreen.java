@@ -64,6 +64,9 @@ public class PlayScreen implements Screen {
 		int left = getScrollX();
 		int top = getScrollY();
 		displayTiles(terminal, left, top);
+		// show some player stats
+		String stats = String.format(" %3d/%3d hp", player.getHitPoints(), player.getTotalHitPoints());
+	    terminal.write(stats, 1, 23);
 	}
 
 	@Override

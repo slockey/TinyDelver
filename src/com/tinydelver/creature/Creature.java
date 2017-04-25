@@ -4,20 +4,27 @@ import java.util.UUID;
 
 import com.tinydelver.strategy.IStrategy;
 import com.tinydelver.strategy.NullStrategy;
+import com.tinydelver.utils.dice.DiceRoller;
+import com.tinydelver.utils.dice.DiceValue;
+import com.tinydelver.utils.dice.HitDice;
 import com.tinydelver.world.Tile;
 import com.tinydelver.world.World;
 
 
 public class Creature implements Actor {
 
-	private World world = null;
-	private int xPos = 0;
-	private int yPos = 0;
-
 	private final String id;
 	private final String name;
 	private final Tile tile;
 
+	private World world = null;
+	private int xPos = 0;
+	private int yPos = 0;
+
+	private HitDice hitDice = new HitDice(0, DiceValue.D0);
+	private int hitPoints = 0;
+	private int totalHitPoints = 0;
+	
 	private IStrategy strategy = new NullStrategy();
 
 	public Creature(String id, String name, Tile tile) {
@@ -26,15 +33,17 @@ public class Creature implements Actor {
 		this.tile = tile;
 	}
 
-	public Creature(String name, Tile tile, World world, int xPos, int yPos) {
-		this(UUID.randomUUID().toString(), name, tile, world, xPos, yPos);
+	public Creature(String name, Tile tile, HitDice hitDice, World world, int xPos, int yPos) {
+		this(UUID.randomUUID().toString(), name, tile, hitDice, world, xPos, yPos);
 	}
 
-	public Creature(String id, String name, Tile tile, World world, int xPos, int yPos) {
+	public Creature(String id, String name, Tile tile, HitDice hitDice, World world, int xPos, int yPos) {
 		this(id, name, tile);
 		this.world = world;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		// store the value and generate hit points
+		setHitDice(hitDice);
 	}
 
 	@Override
@@ -87,6 +96,28 @@ public class Creature implements Actor {
 	}
 
 	@Override
+	public HitDice getHitDice() {
+		return hitDice;
+	}
+
+	private void setHitDice(HitDice hitDice) {
+		this.hitDice = hitDice;
+		// generate hit points based on hit dice & store current and total values
+		hitPoints = DiceRoller.roll(hitDice.getNumber(), hitDice.getDiceValue());
+		totalHitPoints = hitPoints;
+	}
+
+	@Override
+	public int getHitPoints() {
+		return hitPoints;
+	}
+	
+	@Override
+	public int getTotalHitPoints() {
+		return totalHitPoints;
+	}
+
+	@Override
 	public void moveBy(int x, int y) {
 		int targetX = getXPos() + x;
 		int targetY =  getYPos() + y;
@@ -106,9 +137,25 @@ public class Creature implements Actor {
 
 	@Override
 	public void attack(Actor actor) {
-		// for the moment an attack removes the attacked actor from the world
-		// ie: insta-kill
-		world.removeActorFromWorld(actor);
+		// for the moment an attack does 2 damage
+		// TODO: expand this to deal variable damage dependent on weapon, etc.
+		actor.takeDamage(2);
+		if (actor.getHitPoints() <= 0) {
+			world.removeActorFromWorld(actor);
+		}
+	}
+
+	@Override
+	public void takeDamage(int damage) {
+		hitPoints -= damage;
+	}
+
+	@Override
+	public void healDamage(int damage) {
+		hitPoints += damage;
+		if (hitPoints > totalHitPoints) {
+			hitPoints = totalHitPoints;
+		}
 	}
 
 	@Override
