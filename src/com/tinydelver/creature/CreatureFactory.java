@@ -1,5 +1,7 @@
 package com.tinydelver.creature;
 
+import java.util.ArrayList;
+
 import com.tinydelver.strategy.FungusStrategy;
 import com.tinydelver.strategy.PlayerStrategy;
 import com.tinydelver.utils.dice.DiceValue;
@@ -9,12 +11,12 @@ import com.tinydelver.world.World;
 
 public class CreatureFactory {
 
-	public static Actor newPlayerInstance(World world) {
+	public static Actor newPlayerInstance(World world, ArrayList<String> messageQueue) {
 
 		Creature player = new Creature("0:Player", "Player", Tile.PLAYER, new HitDice(1, DiceValue.D10), world, 0, 0);
 
 		// add AI/strategies
-		PlayerStrategy strat = new PlayerStrategy(player);
+		PlayerStrategy strat = new PlayerStrategy(player, messageQueue);
 		player.setStrategy(strat);
 		// set player at random starting location
 		world.determineEmptyStartLocation(player);

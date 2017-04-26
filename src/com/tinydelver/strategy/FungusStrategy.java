@@ -76,4 +76,10 @@ public class FungusStrategy implements IStrategy {
 			}
 		}
 	}
+
+	@Override
+	public void onNotify(String message) {
+		// TODO Auto-generated method stub
+		
+	}
 }

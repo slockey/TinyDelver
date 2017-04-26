@@ -1,16 +1,20 @@
 package com.tinydelver.strategy;
 
+import java.util.ArrayList;
+
 import com.tinydelver.creature.Actor;
 import com.tinydelver.world.Tile;
 
 public class PlayerStrategy implements IStrategy {
 
 	private final Actor player;
+	private final ArrayList<String> messageQueue;
 	
-	public PlayerStrategy(Actor player) {
+	public PlayerStrategy(Actor player, ArrayList<String> messageQueue) {
 		this.player = player;
+		this.messageQueue = messageQueue;
 	}
-	
+
 	@Override
 	public void onEnter(int x, int y, Tile tile) {
 
@@ -33,6 +37,11 @@ public class PlayerStrategy implements IStrategy {
 	public void onUpdate() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onNotify(String message) {
+		messageQueue.add(message);
 	}
 
 }

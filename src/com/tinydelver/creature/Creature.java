@@ -137,10 +137,18 @@ public class Creature implements Actor {
 
 	@Override
 	public void attack(Actor actor) {
+		// message...
+		String msg = String.format("%s attacks the %s", this.getName(), actor.getName());
+		getStrategy().onNotify(msg);
 		// for the moment an attack does 2 damage
 		// TODO: expand this to deal variable damage dependent on weapon, etc.
+		msg = String.format("%s takes %d damage", actor.getName(), 2);
+		getStrategy().onNotify(msg);
 		actor.takeDamage(2);
+		// check for target death
 		if (actor.getHitPoints() <= 0) {
+			msg = String.format("%s dies", actor.getName(), 2);
+			getStrategy().onNotify(msg);
 			world.removeActorFromWorld(actor);
 		}
 	}

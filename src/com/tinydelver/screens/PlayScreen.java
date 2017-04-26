@@ -1,6 +1,7 @@
 package com.tinydelver.screens;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import com.tinydelver.creature.Actor;
 import com.tinydelver.creature.CreatureFactory;
@@ -16,13 +17,16 @@ public class PlayScreen implements Screen {
 	private int screenWidth;
 	private int screenHeight;
 
+	private ArrayList<String> messages;
+
 	private Actor player;
 	
 	public PlayScreen() {
 		screenWidth = 80;
 		screenHeight = 21;
+		messages = new ArrayList<String>();
 		createWorld();
-		player = CreatureFactory.newPlayerInstance(world);
+		player = CreatureFactory.newPlayerInstance(world, messages);
 	}
 	
 	private void createWorld() {
@@ -63,12 +67,27 @@ public class PlayScreen implements Screen {
 	public void displayOutput(AsciiPanel terminal) {
 		int left = getScrollX();
 		int top = getScrollY();
+		// show the tiles
 		displayTiles(terminal, left, top);
+		// show the message queue
+		displayMessages(terminal);
 		// show some player stats
 		String stats = String.format(" %3d/%3d hp", player.getHitPoints(), player.getTotalHitPoints());
 	    terminal.write(stats, 1, 23);
 	}
 
+	/**
+	 * Display queued messages for the user then clear the queue.
+	 * @param terminal
+	 */
+	private void displayMessages(AsciiPanel terminal) {
+	    int top = screenHeight - messages.size();
+	    for (int i = 0; i < messages.size(); i++){
+	        terminal.writeCenter(messages.get(i), top + i);
+	    }
+	    messages.clear();
+	}
+	
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
 
