@@ -22,4 +22,10 @@ public class NullStrategy implements IStrategy {
 		
 	}
 
+	@Override
+	public void onNotify(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
