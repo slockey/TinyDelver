@@ -7,7 +7,7 @@ import com.tinydelver.creature.Actor;
 import com.tinydelver.creature.CreatureFactory;
 import com.tinydelver.world.Tile;
 import com.tinydelver.world.World;
-import com.tinydelver.world.WorldBuilder;
+import com.tinydelver.world.CaveWorldBuilder;
 
 import asciiPanel.AsciiPanel;
 
@@ -30,8 +30,8 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void createWorld() {
-		WorldBuilder builder = new WorldBuilder(90, 31);
-		world = builder.build();
+		CaveWorldBuilder builder = new CaveWorldBuilder(90, 31);
+		world = builder.buildWorld();
 	}
 	
 	public int getScrollX() {
