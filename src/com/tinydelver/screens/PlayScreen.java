@@ -30,33 +30,34 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void createWorld() {
-		CaveWorldBuilder builder = new CaveWorldBuilder(90, 31);
+		CaveWorldBuilder builder = new CaveWorldBuilder(31, 90);
 		world = builder.buildWorld();
 	}
 	
 	public int getScrollX() {
-		return Math.max(0, Math.min(player.getXPos() - screenWidth / 2, world.getWidth() - screenWidth));
+		return Math.max(0, Math.min(player.getXPos() - screenHeight / 2, world.getHeight() - screenHeight));
 	}
 	
 	public int getScrollY() {
-		return Math.max(0, Math.min(player.getYPos() - screenHeight / 2, world.getHeight() - screenHeight));
+		return Math.max(0, Math.min(player.getYPos() - screenWidth / 2, world.getWidth() - screenWidth));
 	}
 	
-	private void displayTiles(AsciiPanel terminal, int left, int top) {
+	private void displayTiles(AsciiPanel terminal, int top, int left) {
 		// write the world tiles
-		for (int idx = 0; idx < screenWidth; idx++) {
-			for (int idy = 0; idy < screenHeight; idy++) {
-				int wx = idx + left;
-				int wy = idy + top;
+		for (int idx = 0; idx < screenHeight; idx++) {
+			for (int idy = 0; idy < screenWidth; idy++) {
+				int wx = idx + top;
+				int wy = idy + left;
 				Tile tile = world.getTile(wx, wy);
-				terminal.write(tile.getGlyph(), idx, idy, tile.getColor());
+				// ascii panel uses x axis for width and y axis for height
+				terminal.write(tile.getGlyph(), idy, idx, tile.getColor());
 				
 				// TODO: this is inefficient. we should only render something that is visible
 				Actor actor = world.getActorAtLocation(wx, wy);
 				if ( actor != null) {
 					terminal.write(actor.getTile().getGlyph(), 
-							   actor.getXPos() - left, 
-							   actor.getYPos() - top, 
+							   actor.getYPos() - left, 
+							   actor.getXPos() - top, 
 							   actor.getTile().getColor());
 				}
 			}
@@ -65,10 +66,10 @@ public class PlayScreen implements Screen {
 	
 	@Override
 	public void displayOutput(AsciiPanel terminal) {
-		int left = getScrollX();
-		int top = getScrollY();
+		int top = getScrollX();
+		int left = getScrollY();
 		// show the tiles
-		displayTiles(terminal, left, top);
+		displayTiles(terminal, top, left);
 		// show the message queue
 		displayMessages(terminal);
 		// show some player stats
@@ -98,19 +99,19 @@ public class PlayScreen implements Screen {
 				return new WinScreen();
 			case KeyEvent.VK_LEFT:
 	        case KeyEvent.VK_H:
-	        	player.moveBy(-1, 0);
+	        	player.moveBy(0, -1);
 	        	break;
 	        case KeyEvent.VK_RIGHT:
 	        case KeyEvent.VK_L: 
-	        	player.moveBy(1, 0);
+	        	player.moveBy(0, 1);
 	        	break;
 	        case KeyEvent.VK_UP:
 	        case KeyEvent.VK_K:
-	        	player.moveBy(0, -1);
+	        	player.moveBy(-1, 0);
 	        	break;
 	        case KeyEvent.VK_DOWN:
 	        case KeyEvent.VK_J:
-	        	player.moveBy(0, 1);
+	        	player.moveBy(1, 0);
 	        	break;
 	        case KeyEvent.VK_SPACE:
 	        	// space == pass

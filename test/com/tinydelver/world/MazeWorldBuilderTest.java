@@ -19,7 +19,7 @@ public class MazeWorldBuilderTest {
 
 	@Test
 	public void builderShouldBuildSimpleMazeWorld() throws Exception {
-		MazeWorldBuilder builder = new MazeWorldBuilder(4, 3);
+		MazeWorldBuilder builder = new MazeWorldBuilder(3, 4);
 		World world = builder.buildWorld();
 		
 		assertNotNull(world);

@@ -12,34 +12,34 @@ public class MazeWorldBuilder implements WorldBuilder {
 	private Tile[][] tiles;
 	private MazeCell[][] maze;
 
-	public MazeWorldBuilder(int width, int height) {
+	public MazeWorldBuilder(int height, int width) {
 		this.width = width;
 		this.height = height;
 		// urgh - this is kinda messed up
 		// tiles array contains BOUNDS tiles - impassable/undiggable
-		this.tiles = new World(width, height).getTiles();
+		this.tiles = new World(height, width).getTiles();
 
-		this.maze = new MazeCell[width][height];
+		this.maze = new MazeCell[height][width];
 		// convert original tiles array to mazecell array
-		for (int idx = 0; idx < width; idx ++) {
-			for (int idy = 0; idy < height; idy++) {
+		for (int idx = 0; idx < height; idx ++) {
+			for (int idy = 0; idy < width; idy++) {
 				maze[idx][idy] = new MazeCell(tiles[idx][idy], idx, idy);
 			}
 		}
 		// now we can init the neighbors
-		for (int idx = 0; idx < width; idx ++) {
-			for (int idy = 0; idy < height; idy++) {
+		for (int idx = 0; idx < height; idx ++) {
+			for (int idy = 0; idy < width; idy++) {
 				MazeCell currentCell = maze[idx][idy];
 				MazeCell north = null;
 				if (idx - 1 >= 0) {
 					north = maze[idx - 1][idy];
 				}
 				MazeCell south = null;
-				if (idx + 1 <= width - 1) {
+				if (idx + 1 <= height - 1) {
 					south = maze[idx + 1][idy];
 				}
 				MazeCell east = null;
-				if (idy + 1 <= height - 1) {
+				if (idy + 1 <= width - 1) {
 					east = maze[idx][idy + 1];
 				}
 				MazeCell west = null;
@@ -93,12 +93,12 @@ public class MazeWorldBuilder implements WorldBuilder {
 		builder.append("\n");
 		
 		// step 2 - for each row draw appropriate vertical lines '|', etc.
-		for (int idx = 0; idx < width; idx++) {
+		for (int idx = 0; idx < height; idx++) {
 			StringBuilder builderSouth = new StringBuilder();
 			builderSouth.append(cellWallIntersect);
 			builder.append(cellVertWall);
 			// we only care about east and south links
-			for(int idy = 0; idy < height; idy++) {
+			for(int idy = 0; idy < width; idy++) {
 				// figure out bounds around each cell in this row
 				String tempBody = Integer.toString(idx) + "," + Integer.toString(idy);
 				builder.append(tempBody);

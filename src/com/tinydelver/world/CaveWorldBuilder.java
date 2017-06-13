@@ -9,10 +9,10 @@ public class CaveWorldBuilder implements WorldBuilder {
 	private final int height;
 	private Tile[][] tiles;
 	
-	public CaveWorldBuilder(int width, int height) {
+	public CaveWorldBuilder(int height, int width) {
 		this.width = width;
 		this.height = height;
-		this.tiles = new World(width, height).getTiles();
+		this.tiles = new World(height, width).getTiles();
 	}
 	
 	@Override
@@ -58,8 +58,8 @@ public class CaveWorldBuilder implements WorldBuilder {
 	 * Randomly fill the tiles map with either floor or wall tiles.
 	 */
 	private void randomizeTiles() {
-		for (int idx = 0; idx < width; idx++) {
-			for (int idy = 0; idy < height; idy++) {
+		for (int idx = 0; idx < height; idx++) {
+			for (int idy = 0; idy < width; idy++) {
 				tiles[idx][idy] = Math.random() < 0.5 ? Tile.FLOOR : Tile.WALL;
 			}
 		}
@@ -71,25 +71,25 @@ public class CaveWorldBuilder implements WorldBuilder {
 	 * @param iterations as the number of times to process
 	 */
 	private void smooth(int iterations) {
-		Tile[][] working = new Tile[width][height];
+		Tile[][] working = new Tile[height][width];
 		
 		for (int iteration = 0; iteration < iterations; iteration++) {
-			smooth(width, height, working);
+			smooth(height, width, working);
 		}
 		// replace original world tiles with smoothed
 		tiles = working;
 	}
 	
-	private void smooth(int width, int height, Tile[][] toSmooth) {
-		for (int idx = 0; idx < width; idx++) {
-			for (int idy = 0; idy < height; idy++) {
+	private void smooth(int height, int width, Tile[][] toSmooth) {
+		for (int idx = 0; idx < height; idx++) {
+			for (int idy = 0; idy < width; idy++) {
 				int floorCount = 0;
 				int notFloorCount = 0;
 				
 				for (int ox = -1; ox < 2; ox++) {
 					for (int oy = -1; oy < 2; oy++) {
 						
-						if ((idx + ox < 0) || (idx + ox >= width) || (idy + oy < 0) || (idy + oy >=height)) {
+						if ((idx + ox < 0) || (idx + ox >= height) || (idy + oy < 0) || (idy + oy >=width)) {
 							continue;
 						}
 						

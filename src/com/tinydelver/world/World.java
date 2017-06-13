@@ -25,10 +25,10 @@ public class World {
 	
 	public World() {
 		// default to size of asciiPanel w/h
-		this(80, 21);
+		this(21, 80);
 	}
 	
-	public World(int width, int height) throws IllegalArgumentException {
+	public World(int height, int width) throws IllegalArgumentException {
 
 		if ((width > Integer.MAX_VALUE) || (width < 1)) {
 			throw new IllegalArgumentException("World width size should be between 1 and Integer.MAX_VALUE");
@@ -41,14 +41,14 @@ public class World {
 		this.height = height;
 		this.actors = new HashMap<String,Actor>();
 		
-		this.tiles = new Tile[width][height];
+		this.tiles = new Tile[height][width];
 		// initialize the world
 		initTiles(tiles, Tile.BOUNDS);
 	}
 	
 	public World(Tile[][] tiles) {
-		this.width = tiles.length;
-		this.height = tiles[0].length;
+		this.height = tiles.length;
+		this.width = tiles[0].length;
 		this.tiles = tiles;
 		this.actors = new HashMap<String,Actor>();
 	}
@@ -73,7 +73,7 @@ public class World {
 	 * @return Tile at location
 	 */
 	public Tile getTile(int x, int y) {
-		if (((x < 0) || x >= width) || ((y < 0) || (y >= height))) {
+		if (((x < 0) || x >= height) || ((y < 0) || (y >= width))) {
 			return Tile.BOUNDS;
 		} else {
 			return tiles[x][y];

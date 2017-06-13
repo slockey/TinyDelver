@@ -43,7 +43,7 @@ public class WorldTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void worldInstantiationShouldFailIfTooLarge() {
-		new World(Integer.MAX_VALUE + 1, Integer.MAX_VALUE);
+		new World(Integer.MAX_VALUE, Integer.MAX_VALUE + 1);
 	}
 
 	@Test
