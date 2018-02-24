@@ -3,13 +3,13 @@ package com.tinydelver.screens;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import asciiPanel.AsciiPanel;
+
 import com.tinydelver.creature.Actor;
 import com.tinydelver.creature.CreatureFactory;
-import com.tinydelver.world.MazeWorldBuilder;
+import com.tinydelver.world.CaveWorldBuilder;
 import com.tinydelver.world.Tile;
 import com.tinydelver.world.World;
-
-import asciiPanel.AsciiPanel;
 
 public class PlayScreen implements Screen {
 
@@ -30,8 +30,8 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void createWorld() {
-//		CaveWorldBuilder builder = new CaveWorldBuilder(31, 90);
-		MazeWorldBuilder builder = new MazeWorldBuilder(31, 90);
+		CaveWorldBuilder builder = new CaveWorldBuilder(31, 90);
+//		MazeWorldBuilder builder = new MazeWorldBuilder(31, 90);
 		world = builder.buildWorld();
 	}
 	
