@@ -19,12 +19,12 @@ public class MazeWorldBuilderTest {
 
 	@Test
 	public void builderShouldBuildSimpleMazeWorld() throws Exception {
-		MazeWorldBuilder builder = new MazeWorldBuilder(12, 12);
+		MazeWorldBuilder builder = new MazeWorldBuilder(3, 6);
 		World world = builder.buildWorld();
 		
 		assertNotNull(world);
-		assertEquals(world.getHeight(), 12);
-		assertEquals(world.getWidth(), 12);
+		assertEquals(world.getHeight(), 3);
+		assertEquals(world.getWidth(), 6);
 		// XXX: testing output
 		System.out.println(builder.toAsciiString());
 		System.out.println(builder.toTileString());

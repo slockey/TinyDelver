@@ -51,7 +51,7 @@ public class BTreeMazeStrategy implements MazeStrategy {
 			// randomly select one s/e neighbor to link
 			MazeCell selected = null;
 			if (options.size() == 2) {
-				int ordinal = DiceRoller.roll(1, DiceValue.D2);
+				int ordinal = DiceRoller.getInstance().roll(1, DiceValue.D2);
 				selected = options.get(ordinal-1);
 			} else if (options.size() == 1) {
 				selected = options.get(0);
@@ -85,7 +85,7 @@ public class BTreeMazeStrategy implements MazeStrategy {
 		// randomly select one s/e neighbor to link
 		MazeCell selected = null;
 		if (options.size() == 2) {
-			int ordinal = DiceRoller.roll(1, DiceValue.D2);
+			int ordinal = DiceRoller.getInstance().roll(1, DiceValue.D2);
 			selected = options.get(ordinal-1);
 		} else if (options.size() == 1) {
 			selected = options.get(0);

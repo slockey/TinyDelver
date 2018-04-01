@@ -129,6 +129,13 @@ public class PlayScreen implements Screen {
 		// make the world update
     	world.update();
 
+        // test for end-game state
+        if (player.getHitPoints() <= 0) {
+            // player died
+            // TODO: display some stats and info
+            return new LoseScreen();
+        }
+
 		return this;
 	}
 
