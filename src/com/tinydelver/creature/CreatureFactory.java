@@ -3,6 +3,7 @@ package com.tinydelver.creature;
 import java.util.ArrayList;
 
 import com.tinydelver.strategy.FungusStrategy;
+import com.tinydelver.strategy.NullStrategy;
 import com.tinydelver.strategy.PlayerStrategy;
 import com.tinydelver.utils.dice.DiceValue;
 import com.tinydelver.utils.dice.HitDice;
@@ -36,4 +37,18 @@ public class CreatureFactory {
 		
 		return fungus;
 	}
+
+    public static Actor newRatInstance(World world) {
+        Creature rat = new Creature("Rat", Tile.RAT, new HitDice(1, DiceValue.D4), world, 0, 0);
+
+        // TODO: implement rat strategy
+        NullStrategy strat = new NullStrategy();
+        rat.setStrategy(strat);
+
+        world.determineEmptyStartLocation(rat);
+        world.addActorToWorld(rat);
+
+        return rat;
+    }
+    
 }

@@ -19,7 +19,7 @@ public class SidewinderMazeStrategy implements MazeStrategy {
 				boolean atEasternBound = (original[idx][idy].getEast() == null);
 				boolean atSouthBound = (original[idx][idy].getSouth() == null);
 				
-				boolean shouldCloseOut = atEasternBound || (!atSouthBound && DiceRoller.roll(1, DiceValue.D2) == 2);
+				boolean shouldCloseOut = atEasternBound || (!atSouthBound && DiceRoller.getInstance().roll(1, DiceValue.D2) == 2);
 				
 				if (shouldCloseOut) {
 					MazeCell cell = run.get((int)(Math.random() * run.size()-1));

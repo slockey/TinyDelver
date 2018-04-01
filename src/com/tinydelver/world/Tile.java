@@ -12,7 +12,8 @@ public enum Tile {
 	WALL((char)177, AsciiPanel.yellow),
 	BOUNDS('X', AsciiPanel.brightBlack),
 	
-	FUNGUS('f', AsciiPanel.green);
+	FUNGUS('f', AsciiPanel.green),
+    RAT('r', AsciiPanel.red);
 	
 	private final char glyph;
 	private final Color color;
